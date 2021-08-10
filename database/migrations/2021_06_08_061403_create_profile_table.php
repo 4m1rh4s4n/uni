@@ -22,7 +22,7 @@ class CreateProfileTable extends Migration
             $table->string("phone");
             $table->string("field");
             $table->string("public_mail");
-            $table->json("optional_fields");
+            $table->json("optional_fields")->nullable();
             $table->timestamps();
         });
     }

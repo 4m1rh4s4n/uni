@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Profile;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
 class PublicController extends Controller
@@ -36,6 +34,9 @@ class PublicController extends Controller
         // return $user;
         return view('welcome', ['user' => $user, 'lang' => $lang_id]);
     }
+    /**
+     * @deprecated 0.01
+     */
     public function locale($id)
     {
         switch ($id) {

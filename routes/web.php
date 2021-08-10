@@ -27,53 +27,47 @@ Route::name("public.")->group(function () {
     Route::get('register', [AuthController::class, 'register_form'])->name('register.form');
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::get('logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('user.login');
+    });
 
-    Route::get('/{slug}/{locale?}', [PublicController::class, 'index'])->name('user');
-    Route::get("/locale/{id}", [PublicController::class, 'locale'])->name('locale');
+    Route::get('u/{slug}/{locale?}', [PublicController::class, 'index'])->name('user');
+    // Route::get("/locale/{id}", [PublicController::class, 'locale'])->name('locale');
 });
 
-
-Route::get('logout', function (Request $request) {
-
-    Auth::logout();
-
-    $request->session()->invalidate();
-
-    $request->session()->regenerateToken();
-
-    return redirect()->route('user.login');
-});
 // Admin specific Routes
-Route::name("admin.")->prefix('admin')->group(function () {
-    //users
-    {
-        Route::get("users/{trash?}", [AdminController::class, 'get_users'])->name('users');
-        Route::post("users", [AdminController::class, 'new_user'])->name('users.create');
-        Route::get("users/{id}/hard", [AdminController::class, 'hard_delete_user'])->name('user.delete.hard');
-        Route::get("users/{id}/soft", [AdminController::class, 'soft_delete_user'])->name('user.delete.soft');
-    }
-    Route::post("settings/admin", [AdminController::class, 'settings'])->name('settings');
-});
 
-Route::name("dashboard.")->prefix('admin')->group(function () {
-    Route::get('dashboard', function () {
-        return view('dashboard');
-    })->name("dashboard");
-
-    Route::get("settings", function () {
-        if (session("role") == "admin") {
-            $id = Auth::guard("admin")->id();
-            $user = Admin::find($id);
-        } else {
-            $id = Auth::id();
-            $user = User::find($id);
+Route::prefix('admin')->group(function () {
+    Route::name("dashboard.")->group(function () {
+        Route::view('dashboard', 'dashboard')->name('dashboard');
+        // Route::view('/', 'dashboard');
+        Route::get("settings", function () {
+            if (session("role") == "admin") {
+                $id = Auth::guard("admin")->id();
+                $user = Admin::find($id);
+            } else {
+                $id = Auth::id();
+                $user = User::find($id);
+            }
+            return view("account", ['user' => $user]);
+        })->name("account");
+    });
+    Route::name("user.")->group(function () {
+        Route::post("settings/user", [UserController::class, 'settings'])->name('settings');
+        Route::get('profile/{lang?}', [UserController::class, 'profile'])->name('profile');
+        Route::post('profile/{lang?}', [UserController::class, 'setProfile'])->name('profile.set');
+    });
+    Route::name("admin.")->group(function () {
+        //users managment
+        {
+            Route::get("users/{trash?}", [AdminController::class, 'get_users'])->name('users');
+            Route::post("users", [AdminController::class, 'new_user'])->name('users.create');
+            Route::get("users/{id}/hard", [AdminController::class, 'hard_delete_user'])->name('user.delete.hard');
+            Route::get("users/{id}/soft", [AdminController::class, 'soft_delete_user'])->name('user.delete.soft');
         }
-        return view("account", ['user' => $user]);
-    })->name("account");
-});
-
-// User Login Routes
-Route::name("user.")->prefix('user')->group(function () {
-
-    Route::post("settings/user", [UserController::class, 'settings'])->name('settings');
+        Route::post("settings/admin", [AdminController::class, 'settings'])->name('settings');
+    });
 });
