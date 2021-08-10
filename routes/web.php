@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\UserController;
 use App\Models\Admin;
 use App\Models\User;
@@ -26,6 +27,9 @@ Route::name("public.")->group(function () {
     Route::get('register', [AuthController::class, 'register_form'])->name('register.form');
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register'])->name('register');
+
+    Route::get('/{slug}/{locale?}', [PublicController::class, 'index'])->name('user');
+    Route::get("/locale/{id}", [PublicController::class, 'locale'])->name('locale');
 });
 
 

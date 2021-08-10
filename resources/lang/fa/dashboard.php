@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'active' => 'Active',
+    'active' => 'فعال',
     'disable' => 'Disabled',
-    'phone' => 'Phone',
-    'email' => 'Email',
+    'phone' => 'شماره تماس',
+    'email' => 'ایمیل',
 
 
 ];

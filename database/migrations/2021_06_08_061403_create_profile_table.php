@@ -18,6 +18,7 @@ class CreateProfileTable extends Migration
             $table->foreignId("user_id")->constrained("users");
             $table->boolean("language")->default('0');
             $table->string("name");
+            $table->string("last_name");
             $table->string("phone");
             $table->string("field");
             $table->string("public_mail");

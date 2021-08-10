@@ -40,9 +40,7 @@ class AuthController extends Controller
             'password' => ['required', 'confirmed'],
             'email' => ['email', 'required']
         ]);
-        $route = 'public.user.login';
         if ($request->has("admin") && $request->admin === "true") {
-            $route = 'public.admin.login';
             $user = new Admin();
             $user->name = $request->name;
         } else {
@@ -51,7 +49,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->email = $request->email;
         $user->save();
-        return redirect()->route($route);
+        return redirect()->route("public.login", ['admin' => 'test']);
     }
     public function login_form(Request $request)
     {
