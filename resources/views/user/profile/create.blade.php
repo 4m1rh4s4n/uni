@@ -13,11 +13,11 @@
         <div class="form-group mb-3">
             <label for="last_name" class="sr-only">Last Name</label>
             <input value="{{$user->last_name}}" type="text" class="form-control" id="last_name" placeholder="Last Name"
-                last_name="name" required>
+                name="last_name" required>
         </div>
         <div class="form-group mb-3">
             <label for="phone" class="sr-only">Phone</label>
-            <input value="{{$user->phone}}" type="text" class="form-control" id="phone" placeholder="phone" name="Phone"
+            <input value="{{$user->phone}}" type="text" class="form-control" id="phone" placeholder="Phone" name="phone"
                 required>
         </div>
         <div class="form-group mb-3">
@@ -27,7 +27,7 @@
         </div>
         <div class="form-group mb-3">
             <label for="field" class="sr-only">Field</label>
-            <input value="{{$user->field}}" type="text" class="form-control" id="field" placeholder="field" name="Field"
+            <input value="{{$user->field}}" type="text" class="form-control" id="field" placeholder="Field" name="field"
                 required>
         </div>
         <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-check"></i></button>

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Awards;
 use App\Models\Profile;
+use App\Models\Publication;
+use App\Models\Thesis;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,14 +64,14 @@ class UserController extends Controller
 
             default:
                 $lang_id = 1;
+                $lang = 'fa';
                 break;
         }
         $user_id = Auth::id();
-        $profile = Profile::where("user_id", $user_id)->first();
+        $profile = Profile::where("user_id", $user_id)->where("language", $lang_id)->first();
         if (is_null($profile)) {
-            $profile = new Profile([
-                'user_id' => $user_id
-            ]);
+            $profile = new Profile();
+            $profile->user_id = $user_id;
         }
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -89,6 +92,77 @@ class UserController extends Controller
             $profile->optional_fields = $request->optional_fields;
         }
         $profile->save();
-        return redirect()->route('user.profile');
+        return redirect()->route('user.profile', ['lang' => $lang]);
+    }
+    public function pubs(Request $request)
+    {
+        $user = Auth::id();
+        $publications = new Publication();
+        $publications->name  = $request->name;
+        $publications->language = $request->language;
+        $publications->user_id = $user;
+        $publications->save();
+        return redirect()->route('user.publications');
+    }
+    public function pubs_edit(Request $request)
+    {
+        $publications = Publication::find($request->id);
+        abort_if(is_null($publications), 404);
+        $publications->name  = $request->name;
+        $publications->language = $request->language;
+        $publications->save();
+        return redirect()->route('user.publications');
+    }
+    public function pubs_list()
+    {
+        $user = Auth::id();
+        $publications = Publication::where('user_id', $user)->get();
+        return view('user.list', ['data' => $publications, 'route' => 'publications']);
+    }
+    public function awards(Request $request)
+    {
+        $user = Auth::id();
+        $awards = new Awards();
+        $awards->name  = $request->name;
+        $awards->language = $request->language;
+        $awards->user_id = $user;
+        $awards->save();
+        return redirect()->route('user.awards');
+    }
+    public function awards_edit(Request $request)
+    {
+        $awards = Awards::find($request->id);
+        abort_if(is_null($awards), 404);
+        $awards->name  = $request->name;
+        $awards->language = $request->language;
+        $awards->save();
+        return redirect()->route('user.awards');
+    }
+    public function awards_list()
+    {
+        $user = Auth::id();
+        $awards = Awards::where('user_id', $user)->get();
+        return view('user.list', ['data' => $awards, 'route' => 'awards']);
+    }
+    public function delete($table, $id)
+    {
+        switch ($table) {
+            case 'publications':
+                $model = Publication::find($id);
+                break;
+            case 'awards':
+                $model = Awards::find($id);
+                break;
+            case 'thesis':
+                $model = Thesis::find($id);
+                break;
+
+            default:
+                abort(404);
+                break;
+        }
+        abort_if(is_null($model), 404);
+        $model->delete();
+        return back();
     }
 }

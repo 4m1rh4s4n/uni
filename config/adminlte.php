@@ -244,6 +244,7 @@ return [
         ],
         [
             'header' => 'settings',
+            'role' => 'admin'
         ],
         [
             'text'        => 'Users',
@@ -251,13 +252,35 @@ return [
             'icon'        => 'fas fa-fw fa-users',
             'role'  => 'admin',
         ],
-        ['header' => 'account_settings'],
+        [
+            'header' => 'user_info',
+            'role' => 'user'
+        ],
         [
             'text' => 'profile',
             'url'  => 'admin/profile',
             'icon' => 'fas fa-fw fa-user',
             'role' => 'user'
         ],
+        [
+            'text' => 'publications',
+            'url'  => 'admin/publications',
+            'icon' => 'fas fa-fw fa-book-open',
+            'role' => 'user'
+        ],
+        [
+            'text' => 'awards',
+            'url'  => 'admin/awards',
+            'icon' => 'fas fa-fw fa-trophy',
+            'role' => 'user'
+        ],
+        [
+            'text' => 'thesis',
+            'url'  => 'admin/thesis',
+            'icon' => 'fas fa-fw fa-book',
+            'role' => 'user'
+        ],
+        ['header' => 'account_settings'],
         [
             'text' => 'account',
             'url'  => 'admin/settings',

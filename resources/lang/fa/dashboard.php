@@ -14,7 +14,7 @@ return [
     */
 
     'active' => 'فعال',
-    'disable' => 'Disabled',
+    'disable' => 'غیرفعال',
     'phone' => 'شماره تماس',
     'email' => 'ایمیل',
 

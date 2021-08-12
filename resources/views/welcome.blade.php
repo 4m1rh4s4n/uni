@@ -27,16 +27,19 @@
             <div>{{__("public.phone")}} : {{$user->profile->phone}}</div>
             <div>{{__("public.email")}} : {{$user->profile->public_mail}}</div>
         </section>
+        <hr>
         <section>
             @foreach ($user->publications as $pub)
             <div>{{$pub->name}}</div>
             @endforeach
         </section>
+        <hr>
         <section>
             @foreach ($user->awards as $award)
             <div>{{$award->name}}</div>
             @endforeach
         </section>
+        <hr>
         <section>
             @foreach ($user->thesis as $thes)
             <div>{{$thes->name}}</div>

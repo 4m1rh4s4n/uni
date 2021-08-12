@@ -35,16 +35,20 @@ Route::name("public.")->group(function () {
     });
 
     Route::get('u/{slug}/{locale?}', [PublicController::class, 'index'])->name('user');
-    // Route::get("/locale/{id}", [PublicController::class, 'locale'])->name('locale');
 });
-
-// Admin specific Routes
 
 Route::prefix('admin')->group(function () {
     Route::name("dashboard.")->group(function () {
-        Route::view('dashboard', 'dashboard')->name('dashboard');
-        // Route::view('/', 'dashboard');
+        Route::get('/dashboard', function () {
+            if (Auth::guest()) {
+                return redirect()->route('public.login.form');
+            }
+            return view('dashboard');
+        })->name('dashboard');
         Route::get("settings", function () {
+            if (Auth::guest()) {
+                return redirect()->route('public.login.form');
+            }
             if (session("role") == "admin") {
                 $id = Auth::guard("admin")->id();
                 $user = Admin::find($id);
@@ -59,6 +63,16 @@ Route::prefix('admin')->group(function () {
         Route::post("settings/user", [UserController::class, 'settings'])->name('settings');
         Route::get('profile/{lang?}', [UserController::class, 'profile'])->name('profile');
         Route::post('profile/{lang?}', [UserController::class, 'setProfile'])->name('profile.set');
+
+        Route::get("publications", [UserController::class, 'pubs_list'])->name('publications');
+        Route::post("publications", [UserController::class, 'pubs'])->name('publications.post');
+        Route::post("publications/edit", [UserController::class, 'pubs_edit'])->name('publications.edit');
+
+        Route::get("awards", [UserController::class, 'awards_list'])->name('awards');
+        Route::post("awards", [UserController::class, 'awards'])->name('awards.post');
+        Route::post("awards/edit", [UserController::class, 'awards_edit'])->name('awards.edit');
+
+        Route::get('delete/{table}/{id}', [UserController::class, 'delete'])->name('delete');
     });
     Route::name("admin.")->group(function () {
         //users managment
