@@ -72,6 +72,10 @@ Route::prefix('admin')->group(function () {
         Route::post("awards", [UserController::class, 'awards'])->name('awards.post');
         Route::post("awards/edit", [UserController::class, 'awards_edit'])->name('awards.edit');
 
+        Route::get("thesis", [UserController::class, 'thesis_list'])->name('thesis');
+        Route::post("thesis", [UserController::class, 'thesis'])->name('thesis.post');
+        Route::post("thesis/edit", [UserController::class, 'thesis_edit'])->name('thesis.edit');
+
         Route::get('delete/{table}/{id}', [UserController::class, 'delete'])->name('delete');
     });
     Route::name("admin.")->group(function () {

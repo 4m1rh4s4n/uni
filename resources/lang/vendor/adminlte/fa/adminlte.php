@@ -19,4 +19,7 @@ return [
     'password_reset_message'      => 'بازنشانی رمز عبور',
     'reset_password'              => 'بازنشانی رمز عبور',
     'send_password_reset_link'    => 'ارسال لینک بازنشانی رمز عبور',
+    'project_name'    => 'نام پروژه',
+    'degree'    => 'مدرک',
+    'defense_date'    => 'تاریخ دفاع',
 ];

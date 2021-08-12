@@ -165,4 +165,35 @@ class UserController extends Controller
         $model->delete();
         return back();
     }
+    public function thesis(Request $request)
+    {
+        $thesis = new Thesis();
+        $thesis->language = $request->language;
+        $thesis->name = $request->name;
+        $thesis->project_name = $request->project_name;
+        $thesis->degree = $request->degree;
+        $thesis->degree = $request->degree;
+        $thesis->defense_date = $request->defense_date;
+        $thesis->user_id = Auth::id();
+        $thesis->save();
+        return redirect()->route("user.thesis");
+    }
+    public function thesis_edit(Request $request)
+    {
+        $thesis = Thesis::find($request->id);
+        $thesis->language = $request->language;
+        $thesis->name = $request->name;
+        $thesis->project_name = $request->project_name;
+        $thesis->degree = $request->degree;
+        $thesis->degree = $request->degree;
+        $thesis->defense_date = $request->defense_date;
+        $thesis->user_id = Auth::id();
+        $thesis->save();
+        return redirect()->route("user.thesis");
+    }
+    public function thesis_list()
+    {
+        $thesis = Thesis::where('user_id', Auth::id())->get();
+        return view('user.thesis', ['data' => $thesis]);
+    }
 }
