@@ -34,7 +34,8 @@ class UserController extends Controller
                 break;
         }
         $profile = Profile::where("user_id", $user_id)->where("language", $lang_id)->first();
-        // return $profile;
+        $image = User::find($user_id)->image;
+        $profile->image = $image;
         return view('user.profile.create', ['user' => $profile, 'lang' => $lang]);
     }
     public function settings(Request $request)
@@ -75,7 +76,7 @@ class UserController extends Controller
         }
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $ext = $image->getExtension();
+            $ext = $image->getClientOriginalExtension();
             $filename = "user-" . $user_id . '.' . $ext;
             $path = $image->storeAs('uploads', $filename, 'public');
             $user = User::find($user_id);

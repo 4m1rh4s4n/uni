@@ -3,7 +3,7 @@
 @section('content')
 <div class="card mt-3 p-5">
     @include('components.lang' , ['route' => 'user.profile' , 'data' => '' , 'dataEn' => 'en'])
-    <form action="{{ route('user.profile.set', ['lang'=>$lang]) }}" method="POST">
+    <form action="{{ route('user.profile.set', ['lang'=>$lang]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group mb-3">
             <label for="name" class="sr-only">Name</label>
@@ -29,6 +29,21 @@
             <label for="field" class="sr-only">Field</label>
             <input value="{{$user->field}}" type="text" class="form-control" id="field" placeholder="Field" name="field"
                 required>
+        </div>
+        <div class="form-row">
+            <div class="col-11">
+                <div class="custom-file mb-3">
+                    <input name="image" type="file" accept="image/*" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+            </div>
+            <div class="col-1">
+                @if (is_null($user->image))
+                <img src="{{ asset('img/user.png') }}" style="width: 150px;height: 150px;">
+                @else
+                <img src="{{ asset($user->image) }}" style="width: 150px;height: 150px;">
+                @endif
+            </div>
         </div>
         <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-check"></i></button>
     </form>
