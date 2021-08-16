@@ -10,12 +10,19 @@
     }
     @endphp
 
-    <form action="@if ($admin){{ route('admin.settings') }}@else{{ route('admin.settings') }}@endif" method="POST">
+    <form action="@if ($admin){{ route('admin.settings') }}@else{{ route('user.settings') }}@endif" method="POST">
         @csrf
         @if ($admin)
         <div class="form-group mb-3">
             <label for="name" class="sr-only">Name</label>
             <input value="{{$user->name}}" type="text" class="form-control" id="name" placeholder="Name" name="name"
+                required>
+        </div>
+        @endif
+        @if (!$admin)
+        <div class="form-group mb-3">
+            <label for="name" class="sr-only">Slug</label>
+            <input value="{{$user->slug}}" type="slug" class="form-control" id="slug" placeholder="Slug" name="slug"
                 required>
         </div>
         @endif

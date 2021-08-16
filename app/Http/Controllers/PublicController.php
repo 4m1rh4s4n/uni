@@ -31,6 +31,7 @@ class PublicController extends Controller
             },
         ])->where('slug', $slug)->first();
         abort_if(is_null($user), 404);
+        abort_if(is_null($user->profile), 404);
         // return $user;
         return view('welcome', ['user' => $user, 'lang' => $lang_id]);
     }

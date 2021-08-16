@@ -31,7 +31,7 @@ Route::name("public.")->group(function () {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('user.login');
+        return redirect()->route('public.login.form');
     });
 
     Route::get('u/{slug}/{locale?}', [PublicController::class, 'index'])->name('user');

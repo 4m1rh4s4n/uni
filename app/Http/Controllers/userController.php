@@ -34,15 +34,18 @@ class UserController extends Controller
                 break;
         }
         $profile = Profile::where("user_id", $user_id)->where("language", $lang_id)->first();
-        $image = User::find($user_id)->image;
-        $profile->image = $image;
+
+        if (!is_null($image = User::find($user_id)->image)) {
+            $profile->image = $image;
+        }
         return view('user.profile.create', ['user' => $profile, 'lang' => $lang]);
     }
     public function settings(Request $request)
     {
         $request->validate([
             'email' => ['email', 'required'],
-            'password' => ['sometimes', 'required', 'confirmed']
+            'password' => ['sometimes', 'confirmed'],
+            'slug' => ['required', 'string']
         ]);
         $id = Auth::id();
         $user = User::find($id);
@@ -50,7 +53,9 @@ class UserController extends Controller
         if (!is_null($request->password)) {
             $user->password = Hash::make($request->password);
         }
+        $user->slug = $request->slug;
         $user->save();
+        session()->forget('slug');
         return redirect()->route("dashboard.account");
     }
     public function setProfile(Request $request, $lang = null)

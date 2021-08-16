@@ -20,13 +20,17 @@ class AuthController extends Controller
             if (Auth::guard('admin')->attempt($credentials)) {
                 $request->session()->regenerate();
                 session()->put('role', 'admin');
-                return redirect()->intended('dashboard');
+                return redirect()->intended('admin/dashboard');
             }
         } else {
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
                 session()->put('role', 'user');
-                return redirect()->intended('dashboard');
+                $user = User::find(Auth::id());
+                if (is_null($user->slug)) {
+                    session()->put('slug', false);
+                }
+                return redirect()->intended('admin/dashboard');
             }
         }
         return back()->withErrors([
