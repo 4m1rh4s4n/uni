@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{$user->profile->name}} {{$user->profile->last_name}}</title>
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/datatables/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/style.css') }}">
     @if ($lang)
     <style>
@@ -48,19 +49,43 @@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    @foreach ($user->publications as $pub)
-                    <div>{{$pub->name}}</div>
-                    @endforeach
+                    <ul class="list-group list-group-flush">
+                        @foreach ($user->publications as $pub)
+                        <li class="list-group-item">{{$pub->name}}</li>
+                        @endforeach
+                    </ul>
+
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    @foreach ($user->awards as $award)
-                    <div>{{$award->name}}</div>
-                    @endforeach
+                    <ul class="list-group list-group-flush">
+                        @foreach ($user->awards as $award)
+                        <li class="list-group-item">{{$award->name}}</li>
+                        @endforeach
+                    </ul>
                 </div>
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                    @foreach ($user->thesis as $thes)
-                    <div>{{$thes->name}}</div>
-                    @endforeach
+                    <div class="p-3">
+                        <table id="thesisTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>نام و نام خانوادگی</th>
+                                    <th>عنوان پروژه</th>
+                                    <th>مقطع</th>
+                                    <th>تاریخ دفاع</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($user->thesis as $thes)
+                                <tr>
+                                    <td>{{$thes->name}}</td>
+                                    <td>{{$thes->project_name}}</td>
+                                    <td>{{$thes->degree}}</td>
+                                    <td>{{$thes->defense_date}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,6 +93,12 @@
     </div>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready( function () {
+    $('#thesisTable').DataTable();
+} );
+    </script>
 </body>
 
 </html>

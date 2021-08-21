@@ -22,20 +22,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::name("public.")->group(function () {
-    Route::get('login', [AuthController::class, 'login_form'])->name('login.form');
-    Route::get('register', [AuthController::class, 'register_form'])->name('register.form');
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('register', [AuthController::class, 'register'])->name('register');
-    Route::get('logout', function (Request $request) {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('public.login.form');
-    });
-
-    Route::get('u/{slug}/{locale?}', [PublicController::class, 'index'])->name('user');
-});
 
 Route::prefix('admin')->group(function () {
     Route::name("dashboard.")->group(function () {
@@ -88,4 +74,19 @@ Route::prefix('admin')->group(function () {
         }
         Route::post("settings/admin", [AdminController::class, 'settings'])->name('settings');
     });
+});
+
+Route::name("public.")->group(function () {
+    Route::get('login', [AuthController::class, 'login_form'])->name('login.form');
+    Route::get('register', [AuthController::class, 'register_form'])->name('register.form');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::get('logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('public.login.form');
+    });
+
+    Route::get('{slug}/{locale?}', [PublicController::class, 'index'])->name('user');
 });
